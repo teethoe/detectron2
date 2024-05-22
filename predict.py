@@ -24,7 +24,9 @@ if __name__ == '__main__':
     parser.add_argument('--output', type=str, help='Path to save directory.')
     args = parser.parse_args()
     filename = Path(args.source).stem
-    save_dir = args.outputi
+    save_dir = Path(args.output)
+    if not save_dir.exists():
+        os.mkdir(save_dir)
     im = cv2.imread(args.source)
 
     # create detectron2 config
@@ -42,5 +44,5 @@ if __name__ == '__main__':
     # draw the predictions on the image.
     v = Visualizer(im[:, :, ::-1], MetadataCatalog.get(cfg.DATASETS.TRAIN[0]), scale=1.2)
     out = v.draw_instance_predictions(outputs["instances"].to("cpu"))
-    cv2.imwrite(str(Path(save_dir) / f'{filename}.jpg'), out.get_image()[:, :, ::-1])
+    cv2.imwrite(str(save_dir / f'{filename}.jpg'), out.get_image()[:, :, ::-1])
 
