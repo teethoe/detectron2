@@ -64,6 +64,7 @@ class _ModelZooUrls:
         # COCO Person Keypoint Detection Baselines with Keypoint R-CNN
         "COCO-Keypoints/keypoint_rcnn_R_50_FPN_1x": "137261548/model_final_04e291.pkl",
         "COCO-Keypoints/keypoint_rcnn_R_50_FPN_3x": "137849621/model_final_a6e10b.pkl",
+        "COCO-Keypoints/keypoint_rcnn_R_50_FPN_3x_custom": "137849621/model_final_a6e10b.pkl",
         "COCO-Keypoints/keypoint_rcnn_R_101_FPN_3x": "138363331/model_final_997cc7.pkl",
         "COCO-Keypoints/keypoint_rcnn_X_101_32x8d_FPN_3x": "139686956/model_final_5ad38f.pkl",
         # COCO Panoptic Segmentation Baselines with Panoptic FPN
