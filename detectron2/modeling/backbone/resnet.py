@@ -351,9 +351,10 @@ class BasicStem(CNNBlockBase):
             norm=get_norm(norm, out_channels),
         )
         weight_init.c2_msra_fill(self.conv1)
+        self.true_stem = None
 
     def forward(self, x):
-        x = self.conv1(x)
+        x = self.true_stem = self.conv1(x)
         x = F.relu_(x)
         x = F.max_pool2d(x, kernel_size=3, stride=2, padding=1)
         return x
@@ -364,7 +365,7 @@ class ResNet(Backbone):
     Implement :paper:`ResNet`.
     """
 
-    def __init__(self, stem, stages, num_classes=None, out_features=None, freeze_at=0, stem_stride=None):
+    def __init__(self, stem, stages, num_classes=None, out_features=None, freeze_at=0, true_stem=False):
         """
         Args:
             stem (nn.Module): a stem module
@@ -381,9 +382,10 @@ class ResNet(Backbone):
         super().__init__()
         self.stem = stem
         self.num_classes = num_classes
+        self.true_stem = true_stem
 
         current_stride = self.stem.stride
-        stem_stride = current_stride if stem_stride is None else stem_stride
+        stem_stride = current_stride if not true_stem else 2
         self._out_feature_strides = {"stem": stem_stride}
         self._out_feature_channels = {"stem": self.stem.out_channels}
 
@@ -445,7 +447,7 @@ class ResNet(Backbone):
         outputs = {}
         x = self.stem(x)
         if "stem" in self._out_features:
-            outputs["stem"] = x
+            outputs["stem"] = x if not self.true_stem else self.stem.true_stem
         for name, stage in zip(self.stage_names, self.stages):
             x = stage(x)
             if name in self._out_features:
@@ -631,7 +633,7 @@ def build_resnet_backbone(cfg, input_shape):
     freeze_at           = cfg.MODEL.BACKBONE.FREEZE_AT
     out_features        = cfg.MODEL.RESNETS.OUT_FEATURES
     depth               = cfg.MODEL.RESNETS.DEPTH
-    stem_stride         = cfg.MODEL.RESNETS.STEM_STRIDE
+    true_stem           = cfg.MODEL.RESNETS.TRUE_STEM
     num_groups          = cfg.MODEL.RESNETS.NUM_GROUPS
     width_per_group     = cfg.MODEL.RESNETS.WIDTH_PER_GROUP
     bottleneck_channels = num_groups * width_per_group
@@ -693,4 +695,4 @@ def build_resnet_backbone(cfg, input_shape):
         out_channels *= 2
         bottleneck_channels *= 2
         stages.append(blocks)
-    return ResNet(stem, stages, out_features=out_features, freeze_at=freeze_at, stem_stride=stem_stride)
+    return ResNet(stem, stages, out_features=out_features, freeze_at=freeze_at, true_stem=true_stem)

@@ -491,7 +491,7 @@ _C.MODEL.RESNETS.NUM_GROUPS = 1
 _C.MODEL.RESNETS.NORM = "FrozenBN"
 
 # Default stem stride
-_C.MODEL.RESNETS.STEM_STRIDE = None
+_C.MODEL.RESNETS.TRUE_STEM = False
 
 # Baseline width of each group.
 # Scaling this parameters will scale the width of all bottleneck layers.
