@@ -35,7 +35,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--source', type=str, help='Path to image file/directory.')
     parser.add_argument('--output', type=str, default='runs/demo', help='Path to save directory.')
-    parser.add_argument('--thres', type=float, default=0.4, help='Threshold for the model.')
+    parser.add_argument('--thres', type=float, default=0.5, help='Threshold for the model.')
     parser.add_argument('--seg', type=str, default=None, help='Path to red zone segment txt.')
     parser.add_argument('--show', type=bool, default=False, help='Display the annotated image/video in a window.')
     args = parser.parse_args()
