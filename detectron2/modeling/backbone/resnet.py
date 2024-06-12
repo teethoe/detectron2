@@ -364,7 +364,7 @@ class ResNet(Backbone):
     Implement :paper:`ResNet`.
     """
 
-    def __init__(self, stem, stages, num_classes=None, out_features=None, freeze_at=0):
+    def __init__(self, stem, stages, num_classes=None, out_features=None, freeze_at=0, stem_stride=None):
         """
         Args:
             stem (nn.Module): a stem module
@@ -383,7 +383,8 @@ class ResNet(Backbone):
         self.num_classes = num_classes
 
         current_stride = self.stem.stride
-        self._out_feature_strides = {"stem": current_stride}
+        stem_stride = current_stride if stem_stride is None else stem_stride
+        self._out_feature_strides = {"stem": stem_stride}
         self._out_feature_channels = {"stem": self.stem.out_channels}
 
         self.stage_names, self.stages = [], []
@@ -630,6 +631,7 @@ def build_resnet_backbone(cfg, input_shape):
     freeze_at           = cfg.MODEL.BACKBONE.FREEZE_AT
     out_features        = cfg.MODEL.RESNETS.OUT_FEATURES
     depth               = cfg.MODEL.RESNETS.DEPTH
+    stem_stride         = cfg.MODEL.RESNETS.STEM_STRIDE
     num_groups          = cfg.MODEL.RESNETS.NUM_GROUPS
     width_per_group     = cfg.MODEL.RESNETS.WIDTH_PER_GROUP
     bottleneck_channels = num_groups * width_per_group
@@ -691,4 +693,4 @@ def build_resnet_backbone(cfg, input_shape):
         out_channels *= 2
         bottleneck_channels *= 2
         stages.append(blocks)
-    return ResNet(stem, stages, out_features=out_features, freeze_at=freeze_at)
+    return ResNet(stem, stages, out_features=out_features, freeze_at=freeze_at, stem_stride=stem_stride)

@@ -4,10 +4,11 @@ MODEL:
   RESNETS:
     DEPTH: 50
     OUT_FEATURES: ["stem", "res2", "res3", "res4", "res5"]
+    STEM_STRIDE: 2
   FPN:
     IN_FEATURES: ["stem", "res2", "res3", "res4", "res5"]
   ANCHOR_GENERATOR:
-    SIZES: [[16], [32], [64], [128], [256], [512]]  # One size for each in feature map
+    SIZES: [[32], [64], [128], [256], [512]]  # One size for each in feature map
   ROI_HEADS:
     IN_FEATURES: ["p1", "p2", "p3", "p4", "p5"]
 SOLVER:

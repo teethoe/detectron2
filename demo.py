@@ -4,10 +4,10 @@ setup_logger()
 
 # import some common libraries
 import os
-import time
 import argparse
 import cv2
 from pathlib import Path
+from time import time
 
 # import some common detectron2 utilities
 from detectron2 import model_zoo
@@ -47,7 +47,7 @@ if __name__ == '__main__':
         file_paths = [source]
     save_dir = Path(args.output)
     if not save_dir.exists():
-        os.mkdir(save_dir)
+        os.makedirs(save_dir)
 
     # create detectron2 config
     cfg = get_cfg()
@@ -55,7 +55,7 @@ if __name__ == '__main__':
     cfg.merge_from_file(model_zoo.get_config_file("COCO-Keypoints/keypoint_rcnn_R_50_FPN_3x_custom.yaml"))
     cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = args.thres  # set threshold for this model
     # Find a model from detectron2's model zoo. You can use the https://dl.fbaipublicfiles... url as well
-    cfg.MODEL.WEIGHTS = model_zoo.get_checkpoint_url("COCO-Keypoints/keypoint_rcnn_R_50_FPN_3x_custom.yaml")
+    cfg.MODEL.WEIGHTS = model_zoo.get_checkpoint_url("COCO-Keypoints/keypoint_rcnn_R_50_FPN_3x.yaml")
 
     # default predictor for inference
     predictor = DefaultPredictor(cfg)
