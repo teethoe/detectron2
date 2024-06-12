@@ -11,7 +11,7 @@ MODEL:
   ROI_HEADS:
     IN_FEATURES: ["p1", "p2", "p3", "p4", "p5"]
   ROI_BOX_HEAD:
-    POOLER_SCALES: (1.0/4, 1.0/8, 1.0/16, 1.0/32, 1.0/64)
+    POOLER_SCALES: (1.0/2, 1.0/4, 1.0/8, 1.0/16, 1.0/32)
 SOLVER:
   STEPS: (210000, 250000)
   MAX_ITER: 270000
