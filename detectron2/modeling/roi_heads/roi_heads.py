@@ -695,7 +695,7 @@ class StandardROIHeads(ROIHeads):
         pooler_scales     = tuple(1.0 / input_shape[k].stride for k in in_features)  # noqa
         sampling_ratio    = cfg.MODEL.ROI_KEYPOINT_HEAD.POOLER_SAMPLING_RATIO
         pooler_type       = cfg.MODEL.ROI_KEYPOINT_HEAD.POOLER_TYPE
-        canonical_level   = cfg.MODEL.ROI_KEYPOINT_HEAD.CANONICAL_LEVEL
+        canonical_level   = cfg.MODEL.ROI_KEYPOINT_HEAD.POOLER_CANONICAL_LEVEL
         # fmt: on
 
         in_channels = [input_shape[f].channels for f in in_features][0]
