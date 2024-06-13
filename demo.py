@@ -37,10 +37,11 @@ if __name__ == '__main__':
     parser.add_argument('--output', type=str, default='runs/demo', help='Path to save directory.')
     parser.add_argument('--thres', type=float, default=0.4, help='Threshold for the model.')
     parser.add_argument('--seg', type=str, default=None, help='Path to red zone segment txt.')
-    parser.add_argument('--show', type=bool, default=False, help='Display the annotated image/video in a window.')
+    parser.add_argument('--show', action='store_true', help='Display the annotated image/video in a window.')
     parser.add_argument('--min-sz', type=int, default=800, help='Size of the smallest side of the image \
         during testing. Set to zero to disable resize in testing.')
     parser.add_argument('--max-sz', type=int, default=1333, help='Size of the largest side of the image during testing.')
+    parser.add_argument('--original', action='store_true', help='Use original model.')
     args = parser.parse_args()
 
     source = Path(args.source)
@@ -57,7 +58,10 @@ if __name__ == '__main__':
     cfg.MIN_SIZE_TEST = args.min_sz
     cfg.MAX_SIZE_TEST = args.max_sz
     # add project-specific config (e.g., TensorMask) here if you're not running a model in detectron2's core library
-    cfg.merge_from_file(model_zoo.get_config_file("COCO-Keypoints/keypoint_rcnn_R_50_FPN_3x_custom.yaml"))
+    if args.original:
+        cfg.merge_from_file(model_zoo.get_config_file("COCO-Keypoints/keypoint_rcnn_R_50_FPN_3x.yaml"))
+    else:
+        cfg.merge_from_file(model_zoo.get_config_file("COCO-Keypoints/keypoint_rcnn_R_50_FPN_3x_custom.yaml"))
     cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = args.thres  # set threshold for this model
     # Find a model from detectron2's model zoo. You can use the https://dl.fbaipublicfiles... url as well
     cfg.MODEL.WEIGHTS = model_zoo.get_checkpoint_url("COCO-Keypoints/keypoint_rcnn_R_50_FPN_3x.yaml")
