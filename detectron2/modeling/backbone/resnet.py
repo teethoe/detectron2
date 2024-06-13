@@ -378,6 +378,8 @@ class ResNet(Backbone):
                 If None, will return the output of the last layer.
             freeze_at (int): The number of stages at the beginning to freeze.
                 see :meth:`freeze` for detailed explanation.
+            true_stem (bool): Whether to return the true stem output. Default (False)
+                returns the stem after max pooling (stride 4).
         """
         super().__init__()
         self.stem = stem
